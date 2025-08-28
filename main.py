@@ -1,4 +1,8 @@
 class Categoria:
+    def __init__(self, id_categoria, nombre):
+        self.id_categoria=id_categoria
+        self.nombre=nombre
+class Manejo_Categoria:
     def __init__(self):
         self.categorias={}
         self.cargar_categoria()
@@ -9,10 +13,40 @@ class Categoria:
                     linea=linea.strip()
                     if linea:
                         id_categoria, nombre=linea.split(":")
-                        self.categorias[id_categoria]={"nombre": nombre}
+                        self.categorias[id_categoria]=Categoria(id_categoria, nombre)
             print("Categorias importadas satisfactoriamente desde: 'categoria.txt'")
         except FileNotFoundError:
             print("No hay archivo para categoria, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_categoria(self):
+        with open("categorias.txt", "w", encoding="utf-8") as archivo:
+            for id_categoria, datos in self.categorias.items():
+                archivo.write(f"{id_categoria}:{datos['nombre']}")
+    def agregar_categoria(self, id_categoria, nombre):
+        if id_categoria in self.categorias.keys():
+            print("Ese ID de categoria ya se encuentra registrado...")
+            return
+        self.categorias[id_categoria]=Categoria(id_categoria, nombre)
+        self.guardar_categoria()
+        print(f"Categoria: {nombre} agregada con exito...")
+
+    def modificar_categoria(self, id_categoria, nuevo_nombre):
+        if id_categoria not in self.categorias:
+            print(f"No existe una categoría con ID {id_categoria}.")
+            return
+        self.categorias[id_categoria].nombre = nuevo_nombre
+        self.guardar_categoria()
+        print(f"Categoría {id_categoria} modificada a '{nuevo_nombre}'.\n")
+
+    def eliminar_categoria(self, id_categoria):
+        if id_categoria not in self.categorias:
+            print(f"No existe una categoría con ID {id_categoria}.")
+            return
+        nombre = self.categorias[id_categoria].nombre
+        del self.categorias[id_categoria]
+        self.guardar_categoria()
+        print(f"Categoría '{nombre}' eliminada con éxito.\n")
+
+
 
 class Producto:
     def __init__(self):
@@ -47,7 +81,7 @@ class Clientes:
 class Proveedores:
     def __init__(self):
         self.proveedores={}
-        self.proveedores()
+        self.cargar_proveedores()
     def cargar_proveedores(self):
         try:
             with open("proveedores.txt", "r", encoding="utf-8") as archivo:
@@ -63,7 +97,7 @@ class Empleados:
     def __init__(self):
         self.empleados={}
         self.cargar_empleados()
-    def cargar_empleados:
+    def cargar_empleados(self):
         try:
             with open("empleados.txt", "r", encoding="utf-8") as archivo:
                 for linea in archivo:
@@ -89,6 +123,20 @@ class Ventas:
             print("Ventas importadas satisfactoriamente desde: 'ventas.txt'")
         except FileNotFoundError:
             print("No hay archivo para ventas, se creara uno nuevo cuando se guarden datos automaticamente")
+class Detalle_Ventas:
+    def __init__(self):
+        self.detalle_ventas={}
+    def cargar_detalle_ventas(self):
+        try:
+            with open("detalleventas.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        id_detalle_ventas, id_venta, cantidad, id_producto, subtotal, stock=linea.split(":")
+                        self.detalle_ventas[id_detalle_ventas]={"id_venta":id_venta, "cantidad":cantidad, "id_producto":id_producto, "subtotal":subtotal, "stock":stock}
+            print("Detalle de ventas importado satisfactoriamente desde: 'detalleventas.txt")
+        except FileNotFoundError:
+            print("No hay archivo para detalle de ventas, se creara uno nuevo cuando se guarden datos automaticamente")
 
 categorias = {}
 productos = {}
