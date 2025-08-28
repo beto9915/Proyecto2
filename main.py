@@ -46,9 +46,17 @@ class Manejo_Categoria:
         self.guardar_categoria()
         print(f"Categoría '{nombre}' eliminada con éxito.\n")
 
-
-
 class Producto:
+    def __init__(self, id_producto, nombre, precio, id_categoria, total_compras, total_ventas, stock):
+        self.id_producto=id_producto
+        self.nombre=nombre
+        self.precio=precio
+        self.id_categoria=id_categoria
+        self.total_compras=total_compras
+        self.total_ventas=total_ventas
+        self.stock=stock
+
+class Manejo_Producto:
     def __init__(self):
         self.productos={}
         self.cargar_productos()
@@ -58,11 +66,38 @@ class Producto:
                 for linea in archivo:
                     linea=linea.strip()
                     if linea:
-                        id_productos, nombre, precio, id_categoria, total_compras, total_ventas=linea.split(":")
-                        self.productos[id_productos]={"nombre":nombre, "precio":precio, "id_categoria":id_categoria, "total_compras":total_compras, "total_ventas":total_ventas}
+                        id_productos, nombre, precio, id_categoria, total_compras, total_ventas, stock=linea.split(":")
+                        self.productos[id_productos]=Producto(id_productos, nombre, precio, id_categoria, total_compras, total_ventas, stock)
             print("Productos importados satisfactoriamente desde: 'productos.txt'")
         except FileNotFoundError:
             print("No hay archivo para productos, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_productos(self):
+        with open("productos.txt", "w", encoding="utf-8") as archivo:
+            for id_productos, datos in self.productos.items():
+                archivo.write(f"{id_productos}:{datos['nombre']}:{datos['precio']}:{datos['id_categoria']}:{datos['total_compras']}:{datos['totao_ventas']:{datos['stock']}}")
+    def agregar_productos(self, id_productos, nombre, precio, id_categoria, total_compras, total_ventas, stock):
+        if id_productos in self.productos.keys():
+            print("Este producto ya se encuentra registrado, intente de nuevo...")
+            return
+        self.productos[id_productos]=Producto(id_productos, nombre, precio, id_categoria, total_compras, total_ventas, stock)
+        self.guardar_productos()
+        print(f"Producto: '{nombre}' agregado con exito\n")
+    def modificar_productos(self, id_productos, nuevo_nombre=None, nuevo_precio=None, nuevo_stock=None):
+        if id_productos not in self.productos.keys():
+            print("El producto no esta registrado, intente de nuevo...")
+            return
+        producto=self.productos[id_productos]
+        if nuevo_nombre is not None:
+            producto.nombre=nuevo_nombre
+        if nuevo_precio is not None:
+            producto.precio=nuevo_precio
+        if nuevo_stock is not None:
+            producto.stock=nuevo_stock
+        self.guardar_productos()
+
+        print(f"Producto: {producto.nombre} actualizado con exito. \n")
+
+
 class Clientes:
     def __init__(self):
         self.clientes={}
