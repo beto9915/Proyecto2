@@ -12,7 +12,32 @@ class Producto:
         self.total_compras = total_compras
         self.total_ventas = total_ventas
         self.stock = stock
-
+class Clientes:
+    def __init__(self, nit_cliente, nombre_cliente, direccion_cliente, telefono_cliente, correo_cliente):
+        self.nit_cliente=nit_cliente
+        self.nombre_cliente=nombre_cliente
+        self.direccion_cliente=direccion_cliente
+        self.telefono_cliente=telefono_cliente
+        self.correo_cliente=correo_cliente
+        self.clientes={}
+class Proveedores:
+    def __init__(self, nit_proveedor, nombre_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor, empresa):
+        self.nit_proveedor=nit_proveedor
+        self.nombre_proveedor=nombre_proveedor
+        self.direccion_proveedor=direccion_proveedor
+        self.telefono_proveedor=telefono_proveedor
+        self.correo_proveedor=correo_proveedor
+        self.empresa=empresa
+        self.proveedores={}
+class Empleados:
+    def __init__(self, id_empleado, nombre_empleado, direccion_empleado, telefono_empleado, correo_empleado, puesto):
+        self.id_empleado=id_empleado
+        self.nombre_empleado=nombre_empleado
+        self.direccion_empleado=direccion_empleado
+        self.telefono_empleado=telefono_empleado
+        self.correo_empleado=correo_empleado
+        self.puesto=puesto
+        self.empleados={}
 
 categorias = {}
 productos = {}
