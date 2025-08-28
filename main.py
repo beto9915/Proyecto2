@@ -1,51 +1,90 @@
 class Categoria:
-    def __init__(self, id_categoria, nombre):
-        self.id_categoria = id_categoria
-        self.nombre = nombre
+    def __init__(self):
+        self.categorias={}
+        self.cargar_categoria()
+    def cargar_categoria(self):
+        try:
+            with open("categorias.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        id_categoria, nombre=linea.split(":")
+                        self.categorias[id_categoria]={"nombre": nombre}
+            print("Categorias importadas satisfactoriamente desde: 'categoria.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para categoria, se creara uno nuevo cuando se guarden datos automaticamente")
 
 class Producto:
-    def __init__(self, id_producto, nombre, precio, id_categoria, total_compras=0, total_ventas=0, stock=0):
-        self.id_producto = id_producto
-        self.nombre = nombre
-        self.precio = precio
-        self.id_categoria = id_categoria
-        self.total_compras = total_compras
-        self.total_ventas = total_ventas
-        self.stock = stock
+    def __init__(self):
+        self.productos={}
+        self.cargar_productos()
+    def cargar_productos(self):
+        try:
+            with open("productos.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        id_productos, nombre, precio, id_categoria, total_compras, total_ventas=linea.split(":")
+                        self.productos[id_productos]={"nombre":nombre, "precio":precio, "id_categoria":id_categoria, "total_compras":total_compras, "total_ventas":total_ventas}
+            print("Productos importados satisfactoriamente desde: 'productos.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para productos, se creara uno nuevo cuando se guarden datos automaticamente")
 class Clientes:
-    def __init__(self, nit_cliente, nombre_cliente, direccion_cliente, telefono_cliente, correo_cliente):
-        self.nit_cliente=nit_cliente
-        self.nombre_cliente=nombre_cliente
-        self.direccion_cliente=direccion_cliente
-        self.telefono_cliente=telefono_cliente
-        self.correo_cliente=correo_cliente
+    def __init__(self):
         self.clientes={}
+    def cargar_clientes(self):
+        try:
+            with open("clientes.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        nit, nombre, direccion, telefono, correo=linea.split(":")
+                        self.clientes[nit]={"nombre":nombre, "direccion":direccion, "telefono":telefono, "correo":correo}
+            print("Clientes importados satisfactoriamente desde: 'clientes.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para clientes, se creara uno nuevo cuando se guarden datos automaticamente")
 class Proveedores:
-    def __init__(self, nit_proveedor, nombre_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor, empresa):
-        self.nit_proveedor=nit_proveedor
-        self.nombre_proveedor=nombre_proveedor
-        self.direccion_proveedor=direccion_proveedor
-        self.telefono_proveedor=telefono_proveedor
-        self.correo_proveedor=correo_proveedor
-        self.empresa=empresa
+    def __init__(self):
         self.proveedores={}
+    def cargar_proveedores(self):
+        try:
+            with open("proveedores.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        nit, nombre, direccion, telefono, correo, empresa=linea.split(":")
+                        self.proveedores[nit]={"nombre": nombre, "direccion":direccion, "telefono":telefono, "correo":correo, "empresa":empresa}
+            print("Proveedores importados satisfactoriamente desde: 'proveedores.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para proveedores, se creara uno nuevo cuando se guarden datos automaticamente")
 class Empleados:
-    def __init__(self, id_empleado, nombre_empleado, direccion_empleado, telefono_empleado, correo_empleado, puesto):
-        self.id_empleado=id_empleado
-        self.nombre_empleado=nombre_empleado
-        self.direccion_empleado=direccion_empleado
-        self.telefono_empleado=telefono_empleado
-        self.correo_empleado=correo_empleado
-        self.puesto=puesto
+    def __init__(self):
         self.empleados={}
+    def cargar_empleados:
+        try:
+            with open("empleados.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        id_empleado, nombre, direccion, telefono, correo, puesto=linea.split(":")
+                        self.empleados[id_empleado]={"nombre": nombre, "direccion":direccion, "telefono":telefono, "correo":correo, "puesto":puesto}
+            print("Categoria importada satisfactoriamente desde: 'empleados.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para empleados, se creara uno nuevo cuando se guarden datos automaticamente")
 class Ventas:
-    def __init__(self, id_ventas, fecha, id_empleado, nit_cliente, total):
-        self.id_ventas=id_ventas
-        self.fecha=fecha
-        self.id_empleado=id_empleado
-        self.nit_cliente=nit_cliente
-        self.total=total
+    def __init__(self):
         self.ventas={}
+    def cargar_ventas(self):
+        try:
+            with open("ventas.txt", "r", encoding="utf-8") as archivo:
+                for linea in archivo:
+                    linea=linea.strip()
+                    if linea:
+                        id_venta, fecha, id_empleado, nit, total=linea.split(":")
+                        self.ventas[id_venta]={"fecha":fecha, "id_empleado":id_empleado, "nit":nit, "total":total}
+            print("Ventas importadas satisfactoriamente desde: 'ventas.txt'")
+        except FileNotFoundError:
+            print("No hay archivo para ventas, se creara uno nuevo cuando se guarden datos automaticamente")
 
 categorias = {}
 productos = {}
