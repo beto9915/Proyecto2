@@ -74,6 +74,7 @@ class Empleados:
 class Ventas:
     def __init__(self):
         self.ventas={}
+        self.cargar_ventas()
     def cargar_ventas(self):
         try:
             with open("ventas.txt", "r", encoding="utf-8") as archivo:
