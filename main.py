@@ -32,6 +32,7 @@ class Producto:
 class Clientes:
     def __init__(self):
         self.clientes={}
+        self.cargar_clientes()
     def cargar_clientes(self):
         try:
             with open("clientes.txt", "r", encoding="utf-8") as archivo:
@@ -46,6 +47,7 @@ class Clientes:
 class Proveedores:
     def __init__(self):
         self.proveedores={}
+        self.proveedores()
     def cargar_proveedores(self):
         try:
             with open("proveedores.txt", "r", encoding="utf-8") as archivo:
@@ -60,6 +62,7 @@ class Proveedores:
 class Empleados:
     def __init__(self):
         self.empleados={}
+        self.cargar_empleados()
     def cargar_empleados:
         try:
             with open("empleados.txt", "r", encoding="utf-8") as archivo:
