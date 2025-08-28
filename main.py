@@ -38,6 +38,14 @@ class Empleados:
         self.correo_empleado=correo_empleado
         self.puesto=puesto
         self.empleados={}
+class Ventas:
+    def __init__(self, id_ventas, fecha, id_empleado, nit_cliente, total):
+        self.id_ventas=id_ventas
+        self.fecha=fecha
+        self.id_empleado=id_empleado
+        self.nit_cliente=nit_cliente
+        self.total=total
+        self.ventas={}
 
 categorias = {}
 productos = {}
