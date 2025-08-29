@@ -96,9 +96,23 @@ class Manejo_Producto:
         self.guardar_productos()
 
         print(f"Producto: {producto.nombre} actualizado con exito. \n")
-
-
+    def eliminar_productos(self, id_productos):
+        if id_productos not in self.productos.keys():
+            print("El producto no existe...")
+            return
+        producto=self.productos[id_productos]
+        del(producto)
+        self.guardar_productos()
+        print(f"El producto {producto.nombre} se elimino correctamente...")
 class Clientes:
+    def __init__(self, nit, nombre, direccion, telefono, correo):
+        self.nit=nit
+        self.nombre=nombre
+        self.direccion=direccion
+        self.telefono=telefono
+        self.correo=correo
+
+class Manejo_Clientes:
     def __init__(self):
         self.clientes={}
         self.cargar_clientes()
@@ -109,11 +123,57 @@ class Clientes:
                     linea=linea.strip()
                     if linea:
                         nit, nombre, direccion, telefono, correo=linea.split(":")
-                        self.clientes[nit]={"nombre":nombre, "direccion":direccion, "telefono":telefono, "correo":correo}
+                        self.clientes[nit]=Clientes(nit, nombre,direccion, telefono,correo)
             print("Clientes importados satisfactoriamente desde: 'clientes.txt'")
         except FileNotFoundError:
             print("No hay archivo para clientes, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_clientes(self):
+        with open("clientes.txt", "w", encoding="utf-8") as archivo:
+            for nit, datos in self.clientes.items():
+                archivo.write(f"{nit}:{datos["nombre"]}:{datos["direccion"]}:{datos["telefono"]}:{datos["correo"]}")
+        print("Cliente guardado satisfactoriamente...")
+    def agregar_cliente(self, nit, nombre, direccion, telefono, correo):
+        if nit  in self.clientes.keys():
+            print("El cliente ya se encuentra registrado...")
+            return
+        self.clientes[nit]=Clientes(nit, nombre, direccion, telefono, correo)
+        self.guardar_clientes()
+        print("Cliente registrado con exito...")
+    def modificar_cliente(self, nit,nuevo_nit=None, nuevo_nombre=None, nueva_direccion=None, nuevo_telefono=None, nuevo_correo=None):
+        if nit not in self.clientes.keys():
+            print("El cliente no existe...")
+            return
+        cliente=self.clientes[nit]
+        if nuevo_nit is not None:
+            cliente.nit=nuevo_nit
+        if nuevo_nombre is not None:
+            cliente.nombre=nuevo_nombre
+        if nueva_direccion is not None:
+            cliente.direccion=nueva_direccion
+        if nuevo_telefono is not None:
+            cliente.telefono=nuevo_telefono
+        if nuevo_correo is not None:
+            cliente.correo=nuevo_correo
+        print("El cliente fue modificado con exito...")
+        self.guardar_clientes()
+    def eliminar_cliente(self, nit):
+        if nit not in self.clientes.keys():
+            print("El cliente no esta registrado...")
+            return
+        cliente=self.clientes[nit]
+        del(cliente)
+        self.guardar_clientes()
+        print("El cliente fue eliminado con exito...")
 class Proveedores:
+    def __init__(self, nit, nombre, direccion, telefono, correo, empresa):
+        self.nit=nit
+        self.nombre=nombre
+        self.direccion=direccion
+        self.telefono=telefono
+        self.correo=correo
+        self.empresa=empresa
+
+class Manejo_Proveedores:
     def __init__(self):
         self.proveedores={}
         self.cargar_proveedores()
@@ -124,10 +184,49 @@ class Proveedores:
                     linea=linea.strip()
                     if linea:
                         nit, nombre, direccion, telefono, correo, empresa=linea.split(":")
-                        self.proveedores[nit]={"nombre": nombre, "direccion":direccion, "telefono":telefono, "correo":correo, "empresa":empresa}
+                        self.proveedores[nit]=Proveedores(nit, nombre, direccion, telefono, correo, empresa)
             print("Proveedores importados satisfactoriamente desde: 'proveedores.txt'")
         except FileNotFoundError:
             print("No hay archivo para proveedores, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_proveedores(self):
+        with open("proveedores.txt", "w", encoding="utf-8") as archivo:
+            for nit, datos in self.proveedores.items():
+                archivo.write(f"{nit}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['empresa']}")
+        print("Proveedor guardado con exito en 'proveedores.txt'\n")
+    def agregar_proveedor(self, nit, nombre, direccion, telefono, correo, empresa):
+        if nit in self.proveedores.keys():
+            print("El proveedor ya se encuentra registrado\n")
+            return
+        self.proveedores[nit]=Proveedores(nit, nombre, direccion, telefono, correo, empresa)
+        self.guardar_proveedores()
+        print(f"Proveedor {nombre} agregado con exito...\n")
+    def modificar_proveedor(self, nit, nuevo_nit=None, nuevo_nombre=None, nueva_direccion=None, nuevo_telefono=None, nuevo_correo=None, nueva_empresa=None):
+        if nit not in self.proveedores.keys():
+            print("El proveedor no existe...\n")
+            return
+        proveedor=self.proveedores[nit]
+        if nuevo_nit is not None:
+            proveedor.nit=nuevo_nit
+        if nuevo_nombre is not None:
+            proveedor.nombre=nuevo_nombre
+        if nueva_direccion is not None:
+            proveedor.direccion=nueva_direccion
+        if nuevo_telefono is not None:
+            proveedor.telefono = nuevo_telefono
+        if nuevo_correo is not None:
+            proveedor.correo=nuevo_correo
+        if nueva_empresa is not None:
+            proveedor.empresa=nueva_empresa
+        self.guardar_proveedores()
+        print(f"El proveedor: {proveedor.nombre} actualizado con exito...\n")
+    def eliminar_proveedor(self, nit):
+        if nit not in self.proveedores.keys():
+            print("El proveedor no existe...")
+            return
+        proveedor=self.proveedores[nit]
+        del(proveedor)
+        print(f"El proveedor {proveedor.nombre} se elimino con exito...")
+        self.guardar_proveedores()
 class Empleados:
     def __init__(self):
         self.empleados={}
