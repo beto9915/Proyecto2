@@ -282,8 +282,14 @@ class Manejo_Empleados:
         del(empleado)
         self.guardar_empleados()
         print(f"Empleado: {empleado.nombre} eliminado con exito...")
-
 class Ventas:
+    def __init__(self, id_venta, fecha, id_empleado, nit, total):
+        self.id_venta=id_venta
+        self.fecha=fecha
+        self.id_empleado=id_empleado
+        self.nit=nit
+        self.total=total
+class Manejo_Ventas:
     def __init__(self):
         self.ventas={}
         self.cargar_ventas()
@@ -294,10 +300,19 @@ class Ventas:
                     linea=linea.strip()
                     if linea:
                         id_venta, fecha, id_empleado, nit, total=linea.split(":")
-                        self.ventas[id_venta]={"fecha":fecha, "id_empleado":id_empleado, "nit":nit, "total":total}
+                        self.ventas[id_venta]=Ventas(id_venta, fecha, id_empleado, nit, total)
             print("Ventas importadas satisfactoriamente desde: 'ventas.txt'")
         except FileNotFoundError:
             print("No hay archivo para ventas, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_ventas(self):
+        with open("ventas.txt", "w", encoding="utf-8") as archivo:
+            for id_venta, datos in self.ventas.items():
+                archivo.write(f"{id_venta}:{datos['fecha']}:{datos['id_empleado']}:{datos['nit']}:{datos['total']}")
+        print("Venta guardada")
+    def agregar_venta(self, id_venta, fecha, id_empleado, nit, total):
+        self.ventas[id_venta]=Ventas(id_venta, fecha, id_empleado, nit, total)
+        self.guardar_ventas()
+        print("Venta guardada")
 class Detalle_Ventas:
     def __init__(self):
         self.detalle_ventas={}
@@ -312,52 +327,8 @@ class Detalle_Ventas:
             print("Detalle de ventas importado satisfactoriamente desde: 'detalleventas.txt")
         except FileNotFoundError:
             print("No hay archivo para detalle de ventas, se creara uno nuevo cuando se guarden datos automaticamente")
-
-categorias = {}
-productos = {}
-
-while True:
-    print("\n--- Menú ---")
-    print("1. Agregar categoría")
-    print("2. Agregar producto")
-    print("3. Listar categorías")
-    print("4. Listar productos")
-    print("5. Salir")
-    opcion = input("Elige una opción: ")
-
-    if opcion == "1":
-        idc = input("IDCategoria: ")
-        nombre = input("Nombre categoría: ")
-        categorias[idc] = Categoria(idc, nombre)
-        print("Categoría agregada.")
-
-    elif opcion == "2":
-        idp = input("IDProducto: ")
-        nombre = input("Nombre producto: ")
-        precio = float(input("Precio: "))
-        idc = input("IDCategoria del producto: ")
-
-        if idc not in categorias:
-            print("Error: La categoría no existe. Agrega primero la categoría.")
-        else:
-            stock = int(input("Stock inicial: "))
-            productos[idp] = Producto(idp, nombre, precio, idc, stock=stock)
-            print("Producto agregado.")
-
-    elif opcion == "3":
-        if not categorias:
-            print("No hay categorías.")
-        for c in categorias.values():
-            print(f"[{c.id_categoria}] {c.nombre}")
-
-    elif opcion == "4":
-        if not productos:
-            print("No hay productos.")
-        for p in productos.values():
-            cat = categorias[p.id_categoria]
-            print(f"[{p.id_producto}] {p.nombre} | Precio: {p.precio} | Categoría: {cat.nombre} | Stock: {p.stock}")
-
-    elif opcion == "5":
-        break
-    else:
-        print("Opción inválida")
+    def guardar_detalle_ventas(self):
+        with open("detalleventas.txt", "w", encoding="utp-8") as archivo:
+            for id_detalle_ventas, datos in self.detalle_ventas.items():
+                archivo.write(f"{id_detalle_ventas}:{datos['id_venta']}:{datos['cantidad']}:{datos['id_producto']}:{datos['subtotal']}:{datos['stock']}")
+        print("Detalle de ventas guardado")
