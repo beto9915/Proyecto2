@@ -228,6 +228,14 @@ class Manejo_Proveedores:
         print(f"El proveedor {proveedor.nombre} se elimino con exito...")
         self.guardar_proveedores()
 class Empleados:
+    def __init__(self, id_empleado, nombre, direccion, telefono, correo, puesto):
+        self.id_empleado=id_empleado
+        self.nombre-=nombre
+        self.direccion=direccion
+        self.telefono=telefono
+        self.correo=correo
+        self.puesto=puesto
+class Manejo_Empleados:
     def __init__(self):
         self.empleados={}
         self.cargar_empleados()
@@ -238,10 +246,43 @@ class Empleados:
                     linea=linea.strip()
                     if linea:
                         id_empleado, nombre, direccion, telefono, correo, puesto=linea.split(":")
-                        self.empleados[id_empleado]={"nombre": nombre, "direccion":direccion, "telefono":telefono, "correo":correo, "puesto":puesto}
+                        self.empleados[id_empleado]=Empleados(id_empleado, nombre, direccion, telefono, correo, puesto)
             print("Categoria importada satisfactoriamente desde: 'empleados.txt'")
         except FileNotFoundError:
             print("No hay archivo para empleados, se creara uno nuevo cuando se guarden datos automaticamente")
+    def guardar_empleados(self):
+        with open("empleados.txt", "w", encoding="utf-8") as archivo:
+            for id_empleado, datos in self.empleados.items():
+                archivo.write(f"{id_empleado}:{datos['nombre']}:{datos['direccion']}:{datos['telefono']}:{datos['correo']}:{datos['puesto']}")
+    def agregar_empleado(self, id_empleado, nombre, direccion, telefono, correo, puesto):
+        if id_empleado in self.empleados.keys():
+            print("Empleado ya esta registrado...")
+            return
+        self.empleados[id_empleado]=Empleados(id_empleado, nombre, direccion, telefono, correo, puesto)
+        self.guardar_empleados()
+        print("Empleado agregado con exito...")
+    def modificar_empleado(self, id_empleado, nueva_direccion=None, nuevo_telefono=None, nuevo_correo=None):
+        if id_empleado not in self.empleados.keys():
+            print("Empleado no existe...")
+            return
+        empleado=self.empleados[id_empleado]
+        if nueva_direccion is not None:
+            empleado.direccion=nueva_direccion
+        if nuevo_telefono is not None:
+            empleado.telefono=nuevo_telefono
+        if nuevo_correo is not None:
+            empleado.correo=nuevo_correo
+        self.guardar_empleados()
+        print(f"El empleado: {empleado.nombre} fue actualizado con exito...")
+    def eliminar_empleado(self, id_empleado):
+        if id_empleado not in self.empleados.keys():
+            print("Empleado no existe...")
+            return
+        empleado=self.empleados[id_empleado]
+        del(empleado)
+        self.guardar_empleados()
+        print(f"Empleado: {empleado.nombre} eliminado con exito...")
+
 class Ventas:
     def __init__(self):
         self.ventas={}
