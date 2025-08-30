@@ -313,6 +313,17 @@ class Manejo_Ventas:
         self.ventas[id_venta]=Ventas(id_venta, fecha, id_empleado, nit, total)
         self.guardar_ventas()
         print("Venta guardada")
+    def modificar_venta(self, id_venta, nueva_fecha=None, nuevo_nit=None, nuevo_total=None):
+        if id_venta not in self.ventas.keys():
+            print("Venta no existe")
+            return
+        venta=self.ventas[id_venta]
+        if nueva_fecha is not None:
+            venta.fecha=nueva_fecha
+        if nuevo_nit is not None:
+            venta.nit=nuevo_nit
+        if nuevo_total is not None:
+            venta.total=nuevo_total
 class Detalle_Ventas:
     def __init__(self):
         self.detalle_ventas={}
@@ -332,3 +343,4 @@ class Detalle_Ventas:
             for id_detalle_ventas, datos in self.detalle_ventas.items():
                 archivo.write(f"{id_detalle_ventas}:{datos['id_venta']}:{datos['cantidad']}:{datos['id_producto']}:{datos['subtotal']}:{datos['stock']}")
         print("Detalle de ventas guardado")
+    def modificar_detalle_ventas(self, id_detalle_ventas, ):
