@@ -351,3 +351,155 @@ class Detalle_Ventas:
         del(detalle)
         self.guardar_detalle_ventas()
         print(f"Detalle de venta: {detalle.id_venta} eliminado con exito...")
+class Program:
+    @staticmethod
+    def main():
+        opcion = 0
+        while opcion != 8:
+            try:
+                print("\n=== MENÚ PRINCIPAL ===")
+                print("1. Ingrese Categoría")
+                print("2. Ingrese Producto")
+                print("3. Ingrese Cliente")
+                print("4. Ingrese Proveedor")
+                print("5. Ingrese Empleado")
+                print("6. Registre Venta")
+                print("7. Registre Detalle de Venta")
+                print("8. Salir")
+                opcion = int(input("Seleccione una opción: "))
+
+                match opcion:
+                    # =============================
+                    case 1:  # Categoría
+                        id_categoria = input("Ingrese el ID de categoría: ")
+                        nombre = input("Ingrese el nombre: ")
+                        categoria = Manejo_Categoria()
+                        categoria.agregar_categoria(id_categoria, nombre)
+
+                    # =============================
+                    case 2:
+                        categorias = Manejo_Categoria()
+                        if not categorias.categorias:
+                            print("No hay categorías registradas. Registre una categoría primero.")
+                            continue
+                        id_producto = input("Ingrese el ID de producto: ")
+                        nombre = input("Ingrese el nombre del producto: ")
+                        precio = input("Ingrese el precio: ")
+                        id_categoria = input("Ingrese el ID de la categoría: ")
+                        if id_categoria not in categorias.categorias:
+                            print("La categoría ingresada no existe.")
+                            continue
+                        total_compras = input("Ingrese total de compras: ")
+                        total_ventas = input("Ingrese total de ventas: ")
+                        stock = input("Ingrese stock disponible: ")
+                        producto = Manejo_Producto()
+                        producto.agregar_productos(id_producto, nombre, precio, id_categoria, total_compras, total_ventas, stock)
+
+
+                    case 3:
+                        nit = input("Ingrese NIT del cliente: ")
+                        nombre = input("Ingrese nombre: ")
+                        direccion = input("Ingrese dirección: ")
+                        telefono = input("Ingrese teléfono: ")
+                        correo = input("Ingrese correo: ")
+                        cliente = Manejo_Clientes()
+                        cliente.agregar_cliente(nit, nombre, direccion, telefono, correo)
+
+
+                    case 4:
+                        nit = input("Ingrese NIT del proveedor: ")
+                        nombre = input("Ingrese nombre: ")
+                        direccion = input("Ingrese dirección: ")
+                        telefono = input("Ingrese teléfono: ")
+                        correo = input("Ingrese correo: ")
+                        empresa = input("Ingrese empresa: ")
+                        proveedor = Manejo_Proveedores()
+                        proveedor.agregar_proveedor(nit, nombre, direccion, telefono, correo, empresa)
+
+
+                    case 5:
+                        id_empleado = input("Ingrese ID del empleado: ")
+                        nombre = input("Ingrese nombre: ")
+                        direccion = input("Ingrese dirección: ")
+                        telefono = input("Ingrese teléfono: ")
+                        correo = input("Ingrese correo: ")
+                        puesto = input("Ingrese puesto: ")
+                        empleado = Manejo_Empleados()
+                        empleado.agregar_empleado(id_empleado, nombre, direccion, telefono, correo, puesto)
+
+
+                    case 6:
+                        # Validaciones
+                        empleados = Manejo_Empleados()
+                        clientes = Manejo_Clientes()
+                        productos = Manejo_Producto()
+                        if not empleados.empleados:
+                            print("No hay empleados registrados. Registre un empleado primero.")
+                            continue
+                        if not clientes.clientes:
+                            print("No hay clientes registrados. Registre un cliente primero.")
+                            continue
+                        if not productos.productos:
+                            print("No hay productos registrados. Registre un producto primero.")
+                            continue
+
+                        id_venta = input("Ingrese ID de la venta: ")
+                        fecha = input("Ingrese fecha (dd/mm/yyyy): ")
+                        id_empleado = input("Ingrese ID del empleado que atiende: ")
+                        if id_empleado not in empleados.empleados:
+                            print("⚠ El empleado no existe.")
+                            continue
+                        nit = input("Ingrese NIT del cliente: ")
+                        if nit not in clientes.clientes:
+                            print("⚠ El cliente no existe.")
+                            continue
+                        total = input("Ingrese total: ")
+                        venta = Manejo_Ventas()
+                        venta.agregar_venta(id_venta, fecha, id_empleado, nit, total)
+
+
+                    case 7:
+                        ventas = Manejo_Ventas()
+                        productos = Manejo_Producto()
+                        if not ventas.ventas:
+                            print("No hay ventas registradas. Registre una venta primero.")
+                            continue
+                        if not productos.productos:
+                            print("No hay productos registrados. Registre un producto primero.")
+                            continue
+
+                        id_detalle = input("Ingrese ID del detalle: ")
+                        id_venta = input("Ingrese ID de la venta: ")
+                        if id_venta not in ventas.ventas:
+                            print("La venta no existe.")
+                            continue
+                        id_producto = input("Ingrese ID del producto: ")
+                        if id_producto not in productos.productos:
+                            print("El producto no existe.")
+                            continue
+                        cantidad = int(input("Ingrese cantidad: "))
+                        producto = productos.productos[id_producto]
+                        if cantidad > int(producto.stock):
+                            print("No hay suficiente stock disponible.")
+                            continue
+                        subtotal = float(producto.precio) * cantidad
+                        stock_restante = int(producto.stock) - cantidad
+                        detalle = Detalle_Ventas()
+                        detalle.detalle_ventas[id_detalle] = {
+                            "id_venta": id_venta,
+                            "cantidad": cantidad,
+                            "id_producto": id_producto,
+                            "subtotal": subtotal,
+                            "stock": stock_restante
+                        }
+                        detalle.guardar_detalle_ventas()
+                        print("Detalle de venta registrado con éxito.")
+
+                    case 8:
+                        print("Saliendo del programa...")
+
+                    case _:
+                        print("Opción inválida, intente nuevamente.")
+
+            except ValueError:
+                print("Error, debe ingresar un número entero...")
