@@ -343,4 +343,11 @@ class Detalle_Ventas:
             for id_detalle_ventas, datos in self.detalle_ventas.items():
                 archivo.write(f"{id_detalle_ventas}:{datos['id_venta']}:{datos['cantidad']}:{datos['id_producto']}:{datos['subtotal']}:{datos['stock']}")
         print("Detalle de ventas guardado")
-    def modificar_detalle_ventas(self, id_detalle_ventas, ):
+    def eliminar_detalle_ventas(self, id_detalle_ventas):
+        if id_detalle_ventas not in self.detalle_ventas.keys():
+            print("No existe ese detalle...")
+            return
+        detalle=self.detalle_ventas[id_detalle_ventas]
+        del(detalle)
+        self.guardar_detalle_ventas()
+        print(f"Detalle de venta: {detalle.id_venta} eliminado con exito...")
