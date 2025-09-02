@@ -20,7 +20,7 @@ class Manejo_Categoria:
     def guardar_categoria(self):
         with open("categorias.txt", "w", encoding="utf-8") as archivo:
             for id_categoria, datos in self.categorias.items():
-                archivo.write(f"{id_categoria}:{datos['nombre']}")
+                archivo.write(f"{id_categoria}:{datos.nombre}")
     def agregar_categoria(self, id_categoria, nombre):
         if id_categoria in self.categorias.keys():
             print("Ese ID de categoria ya se encuentra registrado...")
