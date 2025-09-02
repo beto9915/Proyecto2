@@ -369,14 +369,14 @@ class Program:
                 opcion = int(input("Seleccione una opción: "))
 
                 match opcion:
-                    # =============================
-                    case 1:  # Categoría
+
+                    case 1:
                         id_categoria = input("Ingrese el ID de categoría: ")
                         nombre = input("Ingrese el nombre: ")
                         categoria = Manejo_Categoria()
                         categoria.agregar_categoria(id_categoria, nombre)
 
-                    # =============================
+
                     case 2:
                         categorias = Manejo_Categoria()
                         if not categorias.categorias:
@@ -447,11 +447,11 @@ class Program:
                         fecha = input("Ingrese fecha (dd/mm/yyyy): ")
                         id_empleado = input("Ingrese ID del empleado que atiende: ")
                         if id_empleado not in empleados.empleados:
-                            print("⚠ El empleado no existe.")
+                            print(" El empleado no existe.")
                             continue
                         nit = input("Ingrese NIT del cliente: ")
                         if nit not in clientes.clientes:
-                            print("⚠ El cliente no existe.")
+                            print("El cliente no existe.")
                             continue
                         total = input("Ingrese total: ")
                         venta = Manejo_Ventas()
@@ -503,3 +503,4 @@ class Program:
 
             except ValueError:
                 print("Error, debe ingresar un número entero...")
+Program.main()
